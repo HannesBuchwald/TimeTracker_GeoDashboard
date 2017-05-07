@@ -16,69 +16,116 @@ var properties = [
   {
     value: "id",
     label: "ID",
-    table: {
-      visible: true,
-      sortable: true
-    },
-    filter: {
-      type: "string"
-    },
-    info: false
+    table: { visible: true, sortable: true },
+    filter: { type: "string" }
   },
   {
     value: "status",
-    label: "Status",
-    table: {
-      visible: true,
-      sortable: true
-    },
-    filter: {
-      type: "string"
-    }
+    label: "Status &nbsp; &nbsp; &nbsp;",
+    table: { visible: true, sortable: true },
+    filter: { type: "string" }
   },
   {
     value: "created_at",
-    label: "Time",
-    table: {
-      visible: true,
-      sortable: true
-    },
-    filter: {
-      type: "string"
-    }
-  },
-  {
-    value: "temperature",
-    label: "Temperature",
-    table: {
-      visible: true,
-      sortable: true
-    },
-    filter: {
-      type: "string"
-    }
-  },
-  {
-    value: "latitude",
-    label: "Latitude",
-    table: {
-      visible: true,
-      sortable: true
-    },
-    filter: {
-      type: "string"
-    }
+    label: "Time &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;",
+    table: { visible: true, sortable: true },
+    filter: { type: "string" }
   },
   {
     value: "longitude",
     label: "Longitude",
-    table: {
-      visible: true,
-      sortable: true
-    },
-    filter: {
-      type: "string"
-    }
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "latitude",
+    label: "Latitude",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "gps_altitude",
+    label: "Altitude (m)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "gps_speed",
+    label: "Speed (km/h)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "gps_course",
+    label: "Course (&deg;)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "gps_accuracy",
+    label: "Accuracy (m)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "gps_provider",
+    label: "Provider",
+    table: { visible: true, sortable: true },
+    filter: { type: "string" }
+  },
+  {
+    value: "device_battery",
+    label: "Battery (%)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "temperature",
+    label: "Temp (&deg;C)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "dew_point",
+    label: "DewPoint (&deg;C)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "humidity",
+    label: "Humidity (%)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "precipitation",
+    label: "Precipitation (mm)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "wind_speed",
+    label: "Wind Speed (km/h)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "wind_gust",
+    label: "Wind Gust (km/h)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "wind_direction",
+    label: "Wind Direction",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
+  },
+  {
+    value: "pressure",
+    label: "Pressure (hPa)",
+    table: { visible: true, sortable: true },
+    filter: { type: "double" }
   }
 ];
 
@@ -576,3 +623,45 @@ $("#download-pdf-btn").click(function() {
 $("#chartModal").on("shown.bs.modal", function (e) {
   drawCharts();
 });
+
+$('#reload').click(function() {
+  document.reload;
+});
+
+
+
+// $('#delete-btn').click(function() {
+//   swal({
+//     title: "Are you sure?",
+//     text: "You will not be able to recover this imaginary file!",
+//     type: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#DD6B55",
+//     confirmButtonText: "Yes, delete it!",
+//     cancelButtonText: "No, cancel plx!",
+//     closeOnConfirm: false,
+//     closeOnCancel: false
+//   },
+//   function(isConfirm){
+//
+//     $.ajax({
+//     url: config.geojson,
+//     type: 'DELETE',
+//
+//     success: function(result) {
+//         var test = result;
+//         swal("Deleted!", "Your imaginary file has been deleted.", "success");
+//         isConfirm = true;
+//
+//     }
+//
+//     });
+//
+//     if (isConfirm) {
+//
+//     } else {
+//   	    swal("Cancelled", "Your imaginary file is safe :)", "error");
+//     }
+//   });
+//
+// });
