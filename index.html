@@ -1,239 +1,252 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <meta name="author" content="Bryan McBride">
-  <title class="title">Geo TimeTracker</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet.esri.geocoder/1.0.2/esri-leaflet-geocoder.css">
-
-  <link rel="stylesheet" href="assets/vendor/jQuery-QueryBuilder/query-builder.default.min.css">
-  <link rel="stylesheet" href="assets/css/app.css">
-
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-  <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-</head>
-
-<body>
-
-
-  <div id="loading-mask" class="modal-backdrop">
-    <div class="loading-indicator">
-      <div class="progress progress-striped active">
-        <div class="progress-bar progress-bar-info loading-bar"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a href="#" role="button" class="navbar-brand title" id="reload"><img src="assets/img/ic_launcher-web.png" alt=""  onclick="reload()"/> Geo TimeTracker</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-
-          <!-- <li><a id="about-btn" href="#" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-question-circle fa-white"></i> About</a></li>
-          <li><a id="chart-btn" href="#" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-bar-chart fa-white"></i> Charts</a></li> -->
-          <li><a id="extent-btn" href="#" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-arrows-alt fa-white"></i> Feature Extent</a></li>
-
-          <li class="dropdown">
-            <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-laptop"></i> <span id="view">Split View </span><b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" name="view" id="map-graph"><i class="fa fa-th-large"></i> Split View</a></li>
-              <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" name="view" id="map-only"><i class="fa fa-globe"></i> Map View</a></li>
-              <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" name="view" id="graph-only"><i class="fa fa-table"></i> Table View</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cloud-download"></i> <span id="view">Export Data</span><b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#" id="download-csv-btn"><i class="fa fa-file-text-o"></i> CSV</a></li>
-              <li><a href="#" id="download-excel-btn"><i class="fa fa-file-excel-o"></i> Excel</a></li>
-              <li><a href="#" id="download-pdf-btn"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-            </ul>
-          </li>
-
-          <li ><a id="filter-btn" href="#" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-filter"></i> Filter Data</a></li>
-          <li ><a id="feature-count" class="text-muted" style="padding-left: 15px;"></a>
-          <!-- <li ><a id="delete-btn" href="#" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-delete"></i> Delete Data</a></li> -->
-
-          </li>
-
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div id="map-container">
-    <div id="map"></div>
-  </div>
-
-  <div id="table-container">
-    <table id="table"></table>
-  </div>
-
-
-  <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Welcome to the GeoJSON Data Dashboard!</h4>
-        </div>
-        <div class="modal-body">
-          <ul class="nav nav-tabs" id="aboutTabs">
-            <li class="active"><a href="#about-tab" data-toggle="tab"><i class="fa fa-question-circle"></i> About the project</a></li>
-            <li><a href="#configuration-tab" data-toggle="tab"><i class="fa fa-gear"></i> Configuration</a></li>
-          </ul>
-          <div class="tab-content" id="aboutTabsContent">
-            <div class="tab-pane fade active in" id="about-tab">
-              <p>A configurable framework for building a geographic "data dashboard" from a GeoJSON file. Open source, MIT licensed, and available on <a href="https://github.com/fulcrumapp/geojson-dashboard" target="_blank">GitHub</a>.</p>
-              <div class="panel panel-primary">
-                <div class="panel-heading">Features</div>
-                <ul class="list-group">
-                  <li class="list-group-item">Flexible template built on active open source components</li>
-                  <li class="list-group-item">Entirely client-side, can be hosted for free on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a></li>
-                  <li class="list-group-item">Built on the incredibly popular <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> UI framework</li>
-                  <li class="list-group-item">Maps via <a href="http://leafletjs.com/" target="_blank">Leaflet</a>, the leading open source JavaScript mapping library</li>
-                  <li class="list-group-item">Interactive data table with sorting, searching, column toggling, and data export via the <a href="http://bootstrap-table.wenzhixin.net.cn/" target="_blank">Bootstrap Table</a> plugin</li>
-                  <li class="list-group-item">Advanced, interactive GeoJSON data querying that integrates <a href="http://mistic100.github.io/jQuery-QueryBuilder/index.html" target="_blank">jQuery QueryBuilder</a> with <a href="http://alasql.org/" target="_blank">AlaSQL</a></li>
-                  <li class="list-group-item">Advanced charting via <a href="http://c3js.org/" target="_blank">C3.js</a>, the D3-based reusable chart library</li>
-                </ul>
-              </div>
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Password Protected Page</title>
+    <style>
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #dialogText {
+            padding: 10px 30px;
+            color: white;
+            background-color: #333333;
+        }
+        
+        #dialogWrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: table;
+            background-color: #EEEEEE;
+        }
+        
+        #dialogWrapCell {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        #mainDialog {
+            width: 500px;
+            border: solid #AAAAAA 1px;
+            border-radius: 10px;
+            box-shadow: 3px 3px 5px 3px #AAAAAA;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #FFFFFF;
+            overflow: hidden;
+            text-align: left;
+        }
+        #passArea {
+            padding: 20px 30px;
+            background-color: white;
+        }
+        #passArea > * {
+            margin: 5px auto;
+        }
+        #pass {
+            width: 100%;
+            height: 40px;
+            font-size: 30px;
+        }
+        
+        #messageWrapper {
+            float: left;
+            vertical-align: middle;
+            line-height: 30px;
+        }
+        
+        .notifyText {
+            display: none;
+        }
+        
+        #invalidPass {
+            color: red;
+        }
+        
+        #success {
+            color: green;
+        }
+        
+        #submitPass {
+            font-size: 20px;
+            border-radius: 5px;
+            background-color: #E7E7E7;
+            border: solid gray 1px;
+            float: right;
+        }
+        #contentFrame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+  </head>
+  <body>
+    <iframe id="contentFrame" frameBorder="0"></iframe>
+    <div id="dialogWrap">
+        <div id="dialogWrapCell">
+            <div id="mainDialog">
+                <div id="dialogText">This page is password protected.</div>
+                <div id="passArea">
+                    <p id="passwordPrompt">Password</p>
+                    <input id="pass" type="password" name="pass">
+                    <div>
+                        <span id="messageWrapper">
+                            <span id="invalidPass" class="notifyText">Sorry, please try again.</span>
+                            <span id="success" class="notifyText">Success!</span>
+                            &nbsp;
+                        </span>
+                        <button id="submitPass" type="button">Submit</button>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
             </div>
-            <div class="tab-pane fade" id="configuration-tab" >
-              <p>This dashboard is designed to fetch a GeoJSON file and present the data in an interactive environment for exploration and analysis.</p>
-              <ol>
-                <li>Fork or download the GitHub repo.</li>
-                <li>Open the <em>assets/js/app.js</em> file and edit the <em>config</em> and <em>properties</em> variables.</li>
-                <li>The <em>drawCharts()</em> function demonstrates how charts can be configured.</li>
-                <li>Additional map layers can be added to the global <em>map</em> variable.</li>
-              </ol>
-              <p><strong>Notes</strong></p>
-              <ul>
-                <li>Attempting to load huge GeoJSON files will likely cause browser issues.</li>
-                <li>The <em>properties.table</em> object accepts <a href="http://bootstrap-table.wenzhixin.net.cn/documentation/#column-options" target="_blank">Bootstrap Table column options</a>.</li>
-                <li>The <em>properties.filter</em> object accepts <a href="http://mistic100.github.io/jQuery-QueryBuilder/index.html#filters" target="_blank">jQuery QueryBuilder filter options</a>.</li>
-                <li>Setting the <em>filter.values</em> property to an empty array ([]) will fetch all the distinct values for that property.</li>
-                <li>Setting the <em>table</em>, <em>filter</em>, or <em>info</em> objects to <em>false</em> will hide them from that component.</li>
-              </ul>
-            </div>
-          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/pbkdf2.js"></script>
+    <script>
+        /*! srcdoc-polyfill - v0.1.1 - 2013-03-01
+        * http://github.com/jugglinmike/srcdoc-polyfill/
+        * Copyright (c) 2013 Mike Pennisi; Licensed MIT */
+        (function( window, document, undefined ) {
+	
+	        var idx, iframes;
+	        var _srcDoc = window.srcDoc;
+	        var isCompliant = !!("srcdoc" in document.createElement("iframe"));
+	        var implementations = {
+		        compliant: function( iframe, content ) {
 
-  <div class="modal fade" id="chartModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Charts</h4>
-        </div>
-        <div class="modal-body" style="overflow: auto;">
-          <div role="tabpanel">
-            <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#status-chart" aria-controls="reports" role="tab" data-toggle="tab">Status</a></li>
-              <li role="presentation"><a href="#zone-chart" aria-controls="charts" role="tab" data-toggle="tab">Inventory Zone</a></li>
-              <li role="presentation"><a href="#size-chart" aria-controls="charts" role="tab" data-toggle="tab">Size</a></li>
-              <li role="presentation"><a href="#species-chart" aria-controls="charts" role="tab" data-toggle="tab">Species</a></li>
-            </ul>
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="status-chart"></div>
-              <div role="tabpanel" class="tab-pane" id="zone-chart"></div>
-              <div role="tabpanel" class="tab-pane" id="size-chart"></div>
-              <div role="tabpanel" class="tab-pane" id="species-chart"></div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+			        if (content) {
+				        iframe.setAttribute("srcdoc", content);
+			        }
+		        },
+		        legacy: function( iframe, content ) {
 
-  <div class="modal fade" id="filterModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Filter Data<span id="record-count" class="badge pull-right" style="margin-right: 15px; margin-top: 2px;"></span></h4>
-        </div>
-        <div class="modal-body">
-          <div id="query-builder"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" id="view-sql-btn"><i class="fa fa-database"></i> SQL</button>
-          <button type="button" class="btn btn-info" id="reset-filter-btn"><i class="fa fa-undo"></i> Reset Filter</button>
-          <button type="button" class="btn btn-primary" id="apply-filter-btn"><i class="fa fa-filter"></i> Apply Filter</button>
-        </div>
-      </div>
-    </div>
-  </div>
+			        var jsUrl;
 
-  <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Feature Info</h4>
-        </div>
-        <div class="modal-body" id="feature-info"></div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+			        if (!iframe || !iframe.getAttribute) {
+				        return;
+			        }
 
+			        if (!content) {
+				        content = iframe.getAttribute("srcdoc");
+			        } else {
+				        iframe.setAttribute("srcdoc", content);
+			        }
 
+			        if (content) {
+				        // The value returned by a script-targeted URL will be used as
+				        // the iFrame's content. Create such a URL which returns the
+				        // iFrame element's `srcdoc` attribute.
+				        jsUrl = "javascript: window.frameElement.getAttribute('srcdoc');";
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.2/sweetalert2.common.min.js"></script>
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/leaflet.esri/1.0.0/esri-leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/leaflet.esri.geocoder/1.0.2/esri-leaflet-geocoder.js"></script>
-  <script src="https://cdn.jsdelivr.net/alasql/0.1/alasql.min.js"></script>
-  <script src="assets/vendor/jQuery-QueryBuilder/query-builder.standalone.min.js"></script>
-  <script src="assets/vendor/tableExport/tableExport.min.js"></script>
-  <script src="assets/vendor/tableExport/libs/FileSaver/FileSaver.min.js"></script>
-  <script src="assets/vendor/tableExport/libs/html2canvas/html2canvas.min.js"></script>
-  <script src="assets/vendor/tableExport/libs/jsPDF/jspdf.min.js"></script>
-  <script src="assets/vendor/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+				        iframe.setAttribute("src", jsUrl);
 
-  <script src="assets/js/app.js"></script>
-  <script src="dist/sweetalert-dev.js"></script>
-  <link rel="stylesheet" href="dist/sweetalert.css">
-</body>
+				        // Explicitly set the iFrame's window.location for
+				        // compatability with IE9, which does not react to changes in
+				        // the `src` attribute when it is a `javascript:` URL, for
+				        // some reason
+				        if (iframe.contentWindow) {
+					        iframe.contentWindow.location = jsUrl;
+				        }
+			        }
+		        }
+	        };
+	        var srcDoc = window.srcDoc = {
+		        // Assume the best
+		        set: implementations.compliant,
+		        noConflict: function() {
+			        window.srcDoc = _srcDoc;
+			        return srcDoc;
+		        }
+	        };
+
+	        // If the browser supports srcdoc, no shimming is necessary
+	        if (isCompliant) {
+		        return;
+	        }
+
+	        srcDoc.set = implementations.legacy;
+
+	        // Automatically shim any iframes already present in the document
+	        iframes = document.getElementsByTagName("iframe");
+	        idx = iframes.length;
+
+	        while (idx--) {
+		        srcDoc.set( iframes[idx] );
+	        }
+
+        }( this, this.document ));
+    </script>
+    <script>
+        var pl = {"salt":"ZNaEL+fpFkZY81pNj9/rIRFYU/sKdrN2+owIDSr51iI=","iv":"NH/64WXjH/mrNNeLQppndg==","data":"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"};
+        
+        var submitPass = document.getElementById('submitPass');
+        var passEl = document.getElementById('pass');
+        var invalidPassEl = document.getElementById('invalidPass');
+        var successEl = document.getElementById('success');
+        var contentFrame = document.getElementById('contentFrame');
+        
+        if (pl === "") {
+            submitPass.disabled = true;
+            passEl.disabled = true;
+            alert("This page is meant to be used with the encryption tool. It doesn't work standalone.");
+        }
+        
+        function doSubmit(evt) {
+            try {
+                var decrypted = decryptFile(CryptoJS.enc.Base64.parse(pl.data), passEl.value, CryptoJS.enc.Base64.parse(pl.salt), CryptoJS.enc.Base64.parse(pl.iv));
+                if (decrypted === "") throw "No data returned";
+                
+                // Set default iframe link targets to _top so all links break out of the iframe
+                decrypted = decrypted.replace("<head>", "<head><base href=\".\" target=\"_top\">");
+                
+                srcDoc.set(contentFrame, decrypted);
+                
+                successEl.style.display = "inline";
+                passEl.disabled = true;
+                submitPass.disabled = true;
+                setTimeout(function() {
+                    dialogWrap.style.display = "none";
+                }, 1000);
+            } catch (e) {
+                invalidPassEl.style.display = "inline";
+                passEl.value = "";
+            }
+        }
+        
+        submitPass.onclick = doSubmit;
+        passEl.onkeypress = function(e){
+            if (!e) e = window.event;
+            var keyCode = e.keyCode || e.which;
+            invalidPassEl.style.display = "none";
+            if (keyCode == '13'){
+              // Enter pressed
+              doSubmit();
+              return false;
+            }
+        }
+        
+        function decryptFile(contents, password, salt, iv) {
+            var _cp = CryptoJS.lib.CipherParams.create({
+                ciphertext: contents
+            });
+            var key = CryptoJS.PBKDF2(password, salt, { keySize: 256/32, iterations: 100 });
+            var decrypted = CryptoJS.AES.decrypt(_cp, key, {iv: iv});
+            
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+    </script>
+  </body>
 </html>
