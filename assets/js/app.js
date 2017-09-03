@@ -226,13 +226,14 @@ function buildConfig() {
 }
 
 // Basemap Layers
-var mapboxOSM = L.tileLayer("https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnVsY3J1bSIsImEiOiJjaXI1MHZnNGcwMW41ZnhucjNkOTB1cncwIn0.4ZADnELXGBXsN_RxnPK3Sw", {
+
+var mapboxOSM = L.tileLayer("https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFubmVzYnVjaHdhbGQwMSIsImEiOiJjajc0cjFxemQwYjJrMndtdGR2aDlzbXNtIn0.VAcXcGXZ0iaAN5Lb8oVKMw", {
   maxZoom: 19,
   subdomains: ["a", "b", "c", "d"],
   attribution: 'Basemap <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox © OpenStreetMap</a>'
 });
 
-var mapboxSat = L.tileLayer("https://{s}.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnVsY3J1bSIsImEiOiJjaXI1MHZnNGcwMW41ZnhucjNkOTB1cncwIn0.4ZADnELXGBXsN_RxnPK3Sw", {
+var mapboxSat = L.tileLayer("https://{s}.tiles.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFubmVzYnVjaHdhbGQwMSIsImEiOiJjajc0cjFxemQwYjJrMndtdGR2aDlzbXNtIn0.VAcXcGXZ0iaAN5Lb8oVKMw", {
   maxZoom: 19,
   subdomains: ["a", "b", "c", "d"],
   attribution: 'Basemap <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox © OpenStreetMap</a>'
