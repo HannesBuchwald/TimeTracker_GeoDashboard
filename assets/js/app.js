@@ -1,10 +1,5 @@
 var config = {
-  //geojson: "https://web.fulcrumapp.com/shares/a5c8e07368efde43.geojson",
-  geojson: "https://radiant-temple-85392.herokuapp.com/api/status",
-  //geojson: "https://api.myjson.com/bins/brb89",
-  //geojson: "https://api.myjson.com/bins/z3i55",
-
-  //title: "Geo TimeTracker",
+  geojson: "https://server-timetracker.herokuapp.com/a5c8e07368efde43/status",
   layerName: "GeoData",
   hoverProperty: "species_sim",
   sortProperty: "dbh_2012_inches_diameter_at_breast_height_46",
