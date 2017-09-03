@@ -226,7 +226,6 @@ function buildConfig() {
 }
 
 // Basemap Layers
-
 var mapboxOSM = L.tileLayer("https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFubmVzYnVjaHdhbGQwMSIsImEiOiJjajc0cjFxemQwYjJrMndtdGR2aDlzbXNtIn0.VAcXcGXZ0iaAN5Lb8oVKMw", {
   maxZoom: 19,
   subdomains: ["a", "b", "c", "d"],
