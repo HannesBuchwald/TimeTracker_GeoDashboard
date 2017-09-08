@@ -1,3 +1,21 @@
+/*
+ * Copyright 2017 Hannes Buchwald (hannes.buchwald@gmail.com)
+ *
+ * Licensed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.gnu.org/licenses/agpl-3.0.de.html
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+// configuration link to the api form the geo main server
 var config = {
   geojson: "https://server-timetracker.herokuapp.com/a5c8e07368efde43/status",
   layerName: "GeoData",
@@ -7,6 +25,7 @@ var config = {
 };
 
 
+// definition of the listview
 var properties = [
   {
     value: "id",
@@ -226,6 +245,7 @@ function buildConfig() {
 }
 
 // Basemap Layers
+// To use this dashboard it is recommanded to use a own mapbox access token
 var mapboxOSM = L.tileLayer("https://{s}.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGFubmVzYnVjaHdhbGQwMSIsImEiOiJjajc0cjFxemQwYjJrMndtdGR2aDlzbXNtIn0.VAcXcGXZ0iaAN5Lb8oVKMw", {
   maxZoom: 19,
   subdomains: ["a", "b", "c", "d"],
@@ -308,11 +328,9 @@ onEachFeature: function (feature, layer) {
 }
 });
 
-// Fetch the GeoJSON file
+// Fetch the GeoJSON file form the databse where all the geo data where stored
 $.getJSON(config.geojson, function (data) {
 
-
-  //var arr = $.map(data, function(el) { return el; })
   // Create new json file and put the json array date into features
   var o = {
     "type" : "FeatureCollection",
@@ -624,6 +642,9 @@ $('#reload').click(function() {
 });
 
 
+// Optional
+// IF enable the "delete" function on the API on the Geo MainServer
+// Than this function allowes to delete the content on the database
 
 // $('#delete-btn').click(function() {
 //   swal({
