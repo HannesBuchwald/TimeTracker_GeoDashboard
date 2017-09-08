@@ -34,7 +34,7 @@ It is recommended to host to dashboard on a own webserver.
 
 ## Demonstration
 Under the following link a demo dashboard is initiated.
-https://geo.timetracker.cc
+http://geo.timetracker.cc
 
 
 ## Team
